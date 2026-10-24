@@ -1,7 +1,13 @@
 import 'package:flutter/material.dart';
 
 /// 课堂案例复现：个人名片页 profile_card
-/// 步骤二：容器美化 —— 卡片装饰（圆角/阴影/留白）+ 头像 Stack 徽标
+/// 步骤三：设计稿对照验收 —— 间距/层级/配色逐项核对，无 RenderFlex 溢出告警
+///
+/// 故意实验记录（步骤三要求）：
+/// 把统计条三个数字块外的 Expanded 临时去掉 → Row 里三个 _StatItem 只按
+/// 自身内容宽度报告尺寸，挤在左侧无法等分整行；内容变长时出现 RenderFlex
+/// 溢出黄黑警告。加回 Expanded 后，三块按 flex 均分主轴剩余空间，恢复整齐。
+/// 结论：Expanded 让子组件"吃掉"主轴剩余空间，是等分布局的关键。
 class ProfileCardPage extends StatelessWidget {
   const ProfileCardPage({super.key});
 
@@ -93,23 +99,40 @@ class ProfileCardPage extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 16),
-            // ③ 标签云：Wrap 流式排列
+            // ③ 标签云：Wrap 流式排列，Chip 细化配色
             Wrap(
               spacing: 8,
               runSpacing: 8,
               alignment: WrapAlignment.center,
               children: const [
-                Chip(label: Text('Flutter')),
-                Chip(label: Text('Dart')),
-                Chip(label: Text('布局系统')),
-                Chip(label: Text('移动开发')),
-                Chip(label: Text('开源')),
-                Chip(label: Text('摄影')),
+                _ProfileTag('Flutter'),
+                _ProfileTag('Dart'),
+                _ProfileTag('布局系统'),
+                _ProfileTag('移动开发'),
+                _ProfileTag('开源'),
+                _ProfileTag('摄影'),
               ],
             ),
           ],
         ),
       ),
+    );
+  }
+}
+
+/// 名片标签：浅底 + 主题色文字的 Chip
+class _ProfileTag extends StatelessWidget {
+  final String text;
+  const _ProfileTag(this.text);
+
+  @override
+  Widget build(BuildContext context) {
+    return Chip(
+      label: Text(text),
+      backgroundColor: Colors.indigo[50],
+      side: BorderSide.none,
+      labelStyle: const TextStyle(fontSize: 12, color: Colors.indigo),
+      visualDensity: VisualDensity.compact,
     );
   }
 }
