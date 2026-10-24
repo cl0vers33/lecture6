@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 
 import 'pages/alignment_tasks.dart';
+import 'pages/clip_path_card.dart';
+import 'pages/constraint_experiment.dart';
 import 'pages/container_decoration.dart';
+import 'pages/fittedbox_experiment.dart';
 import 'pages/flex_experiment.dart';
 import 'pages/profile_card.dart';
 import 'pages/stack_badge.dart';
@@ -66,6 +69,25 @@ class HomePage extends StatelessWidget {
             title: '任务4 · 容器美化',
             subtitle: '圆角 / 阴影 / 留白 / 剪裁，三处卡片',
             page: const ContainerDecorationPage(),
+          ),
+          _groupTitle('独立研究（选做）'),
+          _TaskTile(
+            icon: Icons.straighten,
+            title: '研究1 · 约束传递实验',
+            subtitle: '"撑不满"与"溢出"复现 + LayoutBuilder 读约束',
+            page: const ConstraintExperimentPage(),
+          ),
+          _TaskTile(
+            icon: Icons.fit_screen,
+            title: '研究2 · FittedBox 缩放策略',
+            subtitle: 'contain / fill / scaleDown 同一内容对比',
+            page: const FittedBoxExperimentPage(),
+          ),
+          _TaskTile(
+            icon: Icons.content_cut,
+            title: '研究3 · 自定义剪裁形状',
+            subtitle: 'ClipPath 异形卡片头图（波浪 / 斜切）',
+            page: const ClipPathCardPage(),
           ),
         ],
       ),
