@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 
+import 'pages/alignment_tasks.dart';
+import 'pages/container_decoration.dart';
+import 'pages/flex_experiment.dart';
 import 'pages/profile_card.dart';
+import 'pages/stack_badge.dart';
 
 void main() {
   runApp(const Lecture6App());
@@ -20,7 +24,7 @@ class Lecture6App extends StatelessWidget {
   }
 }
 
-/// 任务目录页：列出本次作业各任务入口
+/// 任务目录页：按作业三部分分组列出入口
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
 
@@ -31,31 +35,66 @@ class HomePage extends StatelessWidget {
       body: ListView(
         padding: const EdgeInsets.all(16),
         children: [
+          _groupTitle('案例复现'),
           _TaskTile(
             icon: Icons.badge,
-            title: '案例复现 · profile_card',
-            subtitle: '个人名片页：骨架对齐 → 容器美化 → 设计稿验收',
-            onTap: () => Navigator.push(
-              context,
-              MaterialPageRoute(builder: (_) => const ProfileCardPage()),
-            ),
+            title: 'profile_card 个人名片页',
+            subtitle: '骨架对齐 → 容器美化 → 设计稿验收（三步提交）',
+            page: const ProfileCardPage(),
+          ),
+          _groupTitle('自主实践'),
+          _TaskTile(
+            icon: Icons.align_horizontal_left,
+            title: '任务1 · 六种对齐场景',
+            subtitle: 'MainAxisAlignment 六值逐一实现并标注参数',
+            page: const AlignmentTasksPage(),
+          ),
+          _TaskTile(
+            icon: Icons.view_column,
+            title: '任务2 · 弹性分配实验',
+            subtitle: '三栏 2:1:1 布局 + 超长内容表现记录',
+            page: const FlexExperimentPage(),
+          ),
+          _TaskTile(
+            icon: Icons.layers,
+            title: '任务3 · 层叠角标',
+            subtitle: '头像徽标 + 图片浮层文字（Stack + Positioned）',
+            page: const StackBadgePage(),
+          ),
+          _TaskTile(
+            icon: Icons.style,
+            title: '任务4 · 容器美化',
+            subtitle: '圆角 / 阴影 / 留白 / 剪裁，三处卡片',
+            page: const ContainerDecorationPage(),
           ),
         ],
       ),
     );
   }
+
+  Widget _groupTitle(String text) => Padding(
+        padding: const EdgeInsets.only(top: 8, bottom: 8),
+        child: Text(
+          text,
+          style: const TextStyle(
+            fontSize: 13,
+            fontWeight: FontWeight.bold,
+            color: Colors.indigo,
+          ),
+        ),
+      );
 }
 
 class _TaskTile extends StatelessWidget {
   final IconData icon;
   final String title;
   final String subtitle;
-  final VoidCallback onTap;
+  final Widget page;
   const _TaskTile({
     required this.icon,
     required this.title,
     required this.subtitle,
-    required this.onTap,
+    required this.page,
   });
 
   @override
@@ -66,7 +105,10 @@ class _TaskTile extends StatelessWidget {
         title: Text(title),
         subtitle: Text(subtitle),
         trailing: const Icon(Icons.chevron_right),
-        onTap: onTap,
+        onTap: () => Navigator.push(
+          context,
+          MaterialPageRoute(builder: (_) => page),
+        ),
       ),
     );
   }
